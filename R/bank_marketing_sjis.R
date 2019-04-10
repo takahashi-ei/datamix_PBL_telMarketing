@@ -232,24 +232,24 @@ bank_marketing_train$std_employed = (bank_marketing_train$nr.employed - mean(ban
 
 
 #職業で重みを変える
-bank_marketing_train$std_CCI = ifelse(bank_marketing_train$job == 'blue-collar' |  
-                                      bank_marketing_train$job == 'services' | 
-                                        bank_marketing_train$job == 'technician' |
-                                        bank_marketing_train$job == 'student',
-                                      bank_marketing_train$std_CCI * 0.5,bank_marketing_train$std_CCI)
-bank_marketing_train$std_empVarRate = ifelse(bank_marketing_train$job == 'blue-collar' |
-                                             bank_marketing_train$job == 'entrepreneur.' |  
-                                            bank_marketing_train$job == 'housemaid'| 
-                                            bank_marketing_train$job == 'management' |
-                                            bank_marketing_train$job == 'services' |
-                                            bank_marketing_train$job == 'technician', 
-                                      bank_marketing_train$std_empVarRate * 0.5,bank_marketing_train$std_empVarRate)
+#bank_marketing_train$std_CCI = ifelse(bank_marketing_train$job == 'blue-collar' |  
+#                                      bank_marketing_train$job == 'services' | 
+#                                        bank_marketing_train$job == 'technician' |
+#                                        bank_marketing_train$job == 'student',
+#                                      bank_marketing_train$std_CCI * 0.5,bank_marketing_train$std_CCI)
+#bank_marketing_train$std_empVarRate = ifelse(bank_marketing_train$job == 'blue-collar' |
+#                                             bank_marketing_train$job == 'entrepreneur.' |  
+#                                            bank_marketing_train$job == 'housemaid'| 
+#                                            bank_marketing_train$job == 'management' |
+#                                            bank_marketing_train$job == 'services' |
+#                                            bank_marketing_train$job == 'technician', 
+#                                      bank_marketing_train$std_empVarRate * 0.5,bank_marketing_train$std_empVarRate)
 
-bank_marketing_train$std_euribior = ifelse(bank_marketing_train$job == 'blue-collar' |
-                                          bank_marketing_train$job == 'entrepreneur.' |  
-                                          bank_marketing_train$job == 'services' |
-                                          bank_marketing_train$job == 'student',
-                                      bank_marketing_train$std_euribior * 0.5,bank_marketing_train$std_euribior)
+#bank_marketing_train$std_euribior = ifelse(bank_marketing_train$job == 'blue-collar' |
+#                                          bank_marketing_train$job == 'entrepreneur.' |  
+#                                          bank_marketing_train$job == 'services' |
+#                                          bank_marketing_train$job == 'student',
+#                                      bank_marketing_train$std_euribior * 0.5,bank_marketing_train$std_euribior)
 #yをyes=1,no=0に変更
 bank_marketing_train$y_frag = ifelse(bank_marketing_train$y == 'yes',1,0)
 # duration 30秒未満をリストデータに追加
