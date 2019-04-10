@@ -114,6 +114,15 @@ calc_cutoff <-function(df,ypred_per){
   return(max_cutoff)
 }
 
+###データ解析用に描画ソフトを起動する
+### dfにはロジスティック回帰の結果を
+analyze_data<- function(df,glm){
+#  install.packages('esquisse')
+  df$y_pred<-predict(glm, newdata = df, type="response")
+  bank_marketing_train$y_line<-predict(glm, newdata = df, type="link")
+  esquisse::esquisser(bank_marketing_train)
+}
+
 # 出力したCSVデータを読み込めます
 bank_marketing_train <- read.csv("../data/bank_marketing_train.csv")
 
@@ -232,24 +241,24 @@ bank_marketing_train$std_employed = (bank_marketing_train$nr.employed - mean(ban
 
 
 #職業で重みを変える
-#bank_marketing_train$std_CCI = ifelse(bank_marketing_train$job == 'blue-collar' |  
-#                                      bank_marketing_train$job == 'services' | 
-#                                        bank_marketing_train$job == 'technician' |
-#                                        bank_marketing_train$job == 'student',
-#                                      bank_marketing_train$std_CCI * 0.5,bank_marketing_train$std_CCI)
-#bank_marketing_train$std_empVarRate = ifelse(bank_marketing_train$job == 'blue-collar' |
-#                                             bank_marketing_train$job == 'entrepreneur.' |  
-#                                            bank_marketing_train$job == 'housemaid'| 
-#                                            bank_marketing_train$job == 'management' |
-#                                            bank_marketing_train$job == 'services' |
-#                                            bank_marketing_train$job == 'technician', 
-#                                      bank_marketing_train$std_empVarRate * 0.5,bank_marketing_train$std_empVarRate)
+bank_marketing_train$std_CCI = ifelse(bank_marketing_train$job == 'blue-collar' |  
+                                      bank_marketing_train$job == 'services' | 
+                                        bank_marketing_train$job == 'technician' |
+                                        bank_marketing_train$job == 'student',
+                                      bank_marketing_train$std_CCI * 0.5,bank_marketing_train$std_CCI)
+bank_marketing_train$std_empVarRate = ifelse(bank_marketing_train$job == 'blue-collar' |
+                                             bank_marketing_train$job == 'entrepreneur.' |  
+                                            bank_marketing_train$job == 'housemaid'| 
+                                            bank_marketing_train$job == 'management' |
+                                            bank_marketing_train$job == 'services' |
+                                            bank_marketing_train$job == 'technician', 
+                                      bank_marketing_train$std_empVarRate * 0.5,bank_marketing_train$std_empVarRate)
 
-#bank_marketing_train$std_euribior = ifelse(bank_marketing_train$job == 'blue-collar' |
-#                                          bank_marketing_train$job == 'entrepreneur.' |  
-#                                          bank_marketing_train$job == 'services' |
-#                                          bank_marketing_train$job == 'student',
-#                                      bank_marketing_train$std_euribior * 0.5,bank_marketing_train$std_euribior)
+bank_marketing_train$std_euribior = ifelse(bank_marketing_train$job == 'blue-collar' |
+                                          bank_marketing_train$job == 'entrepreneur.' |  
+                                          bank_marketing_train$job == 'services' |
+                                          bank_marketing_train$job == 'student',
+                                      bank_marketing_train$std_euribior * 0.5,bank_marketing_train$std_euribior)
 #yをyes=1,no=0に変更
 bank_marketing_train$y_frag = ifelse(bank_marketing_train$y == 'yes',1,0)
 # duration 30秒未満をリストデータに追加
@@ -273,13 +282,12 @@ ypred_per<-predict(try_glm, newdata = bank_marketing_train, type="response")
 print(calc_cutoff(bank_marketing_train,ypred_per))
 #0.2~0.25部分でsuccessが多い・
 #その部分の特徴は
-tmp = subset(bank_marketing_train,y_pred >=0.2 & y_pred <= 0.25 & y == 'yes')
-hist(tmp$std_duration)
 
-tmp = subset(bank_marketing_train,duration < 30 & y_pred >= 0.2)
+analyze_data(bank_marketing_train,try_glm)
+
 #データの可視化
 #install.packages('esquisse')
-bank_marketing_train$ressession = as.factor(bank_marketing_train$ressession)
-bank_marketing_train$y_pred<-predict(try_glm, newdata = bank_marketing_train, type="response")
-bank_marketing_train$y_line<-predict(try_glm, newdata = bank_marketing_train, type="link")
-esquisse::esquisser(bank_marketing_train)
+#bank_marketing_train$ressession = as.factor(bank_marketing_train$ressession)
+#bank_marketing_train$y_pred<-predict(try_glm, newdata = bank_marketing_train, type="response")
+#bank_marketing_train$y_line<-predict(try_glm, newdata = bank_marketing_train, type="link")
+#esquisse::esquisser(bank_marketing_train)
