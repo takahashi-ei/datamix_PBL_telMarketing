@@ -115,7 +115,7 @@ calc_cutoff <-function(df,ypred_per){
 }
 
 # 出力したCSVデータを読み込めます
-bank_marketing_train <- read.csv("bank_marketing_train.csv")
+bank_marketing_train <- read.csv("../data/bank_marketing_train.csv")
 
 #jobのデータ構造を見る->空のデータはなし、unknownが288個。
 summary(bank_marketing_train$job)
