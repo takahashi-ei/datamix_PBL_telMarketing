@@ -275,6 +275,10 @@ bank_marketing_train$std_CPI = (mean(subset(bank_marketing_train,y == 'no')$std_
 bank_marketing_train$std_euribior = (mean(subset(bank_marketing_train,y == 'no')$std_euribior) - 
                                       mean(subset(bank_marketing_train,y == 'yes')$std_euribior)) * 
                                       bank_marketing_train$std_euribior
+bank_marketing_train$std_empVarRate = (bank_marketing_train$std_empVarRate - mean(bank_marketing_train$std_empVarRate)) / sd(bank_marketing_train$std_empVarRate)
+bank_marketing_train$std_CPI = (bank_marketing_train$std_CPI - mean(bank_marketing_train$std_CPI)) / sd(bank_marketing_train$std_CPI)
+bank_marketing_train$std_CCI = (bank_marketing_train$std_CCI - mean(bank_marketing_train$std_CCI)) / sd(bank_marketing_train$std_CCI)
+bank_marketing_train$std_euribior = (bank_marketing_train$std_euribior - mean(bank_marketing_train$std_euribior)) / sd(bank_marketing_train$std_euribior)
 #yをyes=1,no=0に変更
 bank_marketing_train$y_frag = ifelse(bank_marketing_train$y == 'yes',1,0)
 # duration 30秒未満をリストデータに追加
