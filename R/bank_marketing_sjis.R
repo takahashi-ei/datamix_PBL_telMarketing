@@ -87,9 +87,9 @@ calc_cutoff <-function(df,ypred_per){
   Y = c()
   #cutoffの値は、0~100まで5刻みで使う
   for (i in 10:100){
-    if (i %% 5 != 0){
-      next
-    }
+#    if (i %% 5 != 0){
+#      next
+#    }
     cutoff = i / 100
     pred = ifelse(ypred_per > cutoff,1,0) 
     conf_mat<-table(df$y_frag, pred)
@@ -239,6 +239,14 @@ bank_marketing_train$std_CCI = (bank_marketing_train$cons.conf.idx - mean(bank_m
 bank_marketing_train$std_euribior = (bank_marketing_train$euribor3m - mean(bank_marketing_train$euribor3m)) / sd(bank_marketing_train$euribor3m)
 bank_marketing_train$std_employed = (bank_marketing_train$nr.employed - mean(bank_marketing_train$nr.employed)) / sd(bank_marketing_train$nr.employed)
 
+# duration 30秒未満をリストデータに追加
+bank_marketing_train$duration_min_30 = ifelse(bank_marketing_train$duration < 30,1,0)
+bank_marketing_train$duration_min_30 = as.factor(bank_marketing_train$duration_min_30)
+bank_marketing_train$ressession = ifelse(bank_marketing_train$std_empVarRate < 0,1,0)
+bank_marketing_train$ressession = ifelse(bank_marketing_train$std_CPI < 0,1+bank_marketing_train$ressession,0+bank_marketing_train$ressession)
+bank_marketing_train$ressession = ifelse(bank_marketing_train$std_CCI < 0,1+bank_marketing_train$ressession,0+bank_marketing_train$ressession)
+#ressessionは2のデータが少ないため、2のときのsuccessとなる確率が3となる確率より高くなるので、2以上は共通とする
+bank_marketing_train$ressession = ifelse(bank_marketing_train$ressession >= 2,2,bank_marketing_train$ressession)
 
 #職業で重みを変える
 #bank_marketing_train$std_CCI = ifelse(bank_marketing_train$job == 'blue-collar' |  
@@ -259,10 +267,10 @@ bank_marketing_train$std_employed = (bank_marketing_train$nr.employed - mean(ban
 #                                      bank_marketing_train$std_euribior * 0.5,bank_marketing_train$std_euribior)
 
 
-bank_marketing_train$std_empVarRate = (mean(subset(bank_marketing_train,y == 'no')$std_empVarRate) - 
-                                      mean(subset(bank_marketing_train,y == 'yes')$std_empVarRate)) * 
-                                      bank_marketing_train$std_empVarRate
-bank_marketing_train$std_empVarRate = ifelse(bank_marketing_train$job == 'student',2,bank_marketing_train$std_empVarRate)
+#bank_marketing_train$std_empVarRate = (mean(subset(bank_marketing_train,y == 'no')$std_empVarRate) - 
+#                                      mean(subset(bank_marketing_train,y == 'yes')$std_empVarRate)) * 
+#                                      bank_marketing_train$std_empVarRate
+#bank_marketing_train$std_empVarRate = ifelse(bank_marketing_train$job == 'student',2,bank_marketing_train$std_empVarRate)
 
 bank_marketing_train$std_CCI = (mean(subset(bank_marketing_train,y == 'no')$std_CCI) - 
                                       mean(subset(bank_marketing_train,y == 'yes')$std_CCI)) * 
@@ -272,23 +280,15 @@ bank_marketing_train$std_CPI = (mean(subset(bank_marketing_train,y == 'no')$std_
                                       mean(subset(bank_marketing_train,y == 'yes')$std_CPI)) * 
                                       bank_marketing_train$std_CPI
 
-bank_marketing_train$std_euribior = (mean(subset(bank_marketing_train,y == 'no')$std_euribior) - 
-                                      mean(subset(bank_marketing_train,y == 'yes')$std_euribior)) * 
-                                      bank_marketing_train$std_euribior
-bank_marketing_train$std_empVarRate = (bank_marketing_train$std_empVarRate - mean(bank_marketing_train$std_empVarRate)) / sd(bank_marketing_train$std_empVarRate)
+#bank_marketing_train$std_euribior = (mean(subset(bank_marketing_train,y == 'no')$std_euribior) - 
+#                                      mean(subset(bank_marketing_train,y == 'yes')$std_euribior)) * 
+#                                      bank_marketing_train$std_euribior
+#bank_marketing_train$std_empVarRate = (bank_marketing_train$std_empVarRate - mean(bank_marketing_train$std_empVarRate)) / sd(bank_marketing_train$std_empVarRate)
 bank_marketing_train$std_CPI = (bank_marketing_train$std_CPI - mean(bank_marketing_train$std_CPI)) / sd(bank_marketing_train$std_CPI)
 bank_marketing_train$std_CCI = (bank_marketing_train$std_CCI - mean(bank_marketing_train$std_CCI)) / sd(bank_marketing_train$std_CCI)
-bank_marketing_train$std_euribior = (bank_marketing_train$std_euribior - mean(bank_marketing_train$std_euribior)) / sd(bank_marketing_train$std_euribior)
+#bank_marketing_train$std_euribior = (bank_marketing_train$std_euribior - mean(bank_marketing_train$std_euribior)) / sd(bank_marketing_train$std_euribior)
 #yをyes=1,no=0に変更
 bank_marketing_train$y_frag = ifelse(bank_marketing_train$y == 'yes',1,0)
-# duration 30秒未満をリストデータに追加
-bank_marketing_train$duration_min_30 = ifelse(bank_marketing_train$duration < 30,1,0)
-bank_marketing_train$duration_min_30 = as.factor(bank_marketing_train$duration_min_30)
-bank_marketing_train$ressession = ifelse(bank_marketing_train$std_empVarRate < 0,1,0)
-bank_marketing_train$ressession = ifelse(bank_marketing_train$std_CPI < 0,1+bank_marketing_train$ressession,0+bank_marketing_train$ressession)
-bank_marketing_train$ressession = ifelse(bank_marketing_train$std_CCI < 0,1+bank_marketing_train$ressession,0+bank_marketing_train$ressession)
-#ressessionは2のデータが少ないため、2のときのsuccessとなる確率が3となる確率より高くなるので、2以上は共通とする
-bank_marketing_train$ressession = ifelse(bank_marketing_train$ressession >= 2,2,bank_marketing_train$ressession)
 #bank_marketing_train$ressession = (bank_marketing_train$ressession - mean(bank_marketing_train$ressession)) / sd(bank_marketing_train$ressession)
 
 try_glm = glm(y_frag~.-age-duration-campaign-pdays-previous-emp.var.rate-cons.price.idx-cons.conf.idx-euribor3m-nr.employed-y-y_frag-month-std_employed-day_of_week,data=bank_marketing_train)
