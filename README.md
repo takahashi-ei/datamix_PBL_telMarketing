@@ -1,45 +1,46 @@
-#Name
-datamix_PBL_telMarketing
-#Overview
-ƒf[ƒ^ƒ~ƒbƒNƒX‚ÌPBLAu‹âsƒeƒŒƒ}[ƒPƒeƒBƒ“ƒOv‚ÌƒvƒƒOƒ‰ƒ€‚Å‚·B
-‚±‚ÌƒŠƒ|ƒWƒgƒŠ‚É‚Í‰º‹L2‚Â‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B
-EƒƒWƒXƒeƒBƒbƒN‰ñ‹A‚ðŽg‚Á‚Ä‹âsƒeƒŒƒ}[ƒPƒeƒBƒ“ƒO‚ª¬Œ÷‚·‚éorŽ¸”s‚·‚é‚ð”»’f‚µ‚Ü‚·B
-Ek-means–@‚ðŽg‚Á‚ÄA2‚Â‚Ìƒf[ƒ^‚ðƒyƒ‹ƒ\ƒi‚É•ª‚¯‚éB
+## Name
+datamix_PBL_telMarketing<br>
+
+## Overview
+ãƒ‡ãƒ¼ã‚¿ãƒŸãƒƒã‚¯ã‚¹ã®PBLã€ã€ŒéŠ€è¡Œãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ã€ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ã€‚<br>
+ã“ã®ãƒªãƒã‚¸ãƒˆãƒªã«ã¯ä¸‹è¨˜2ã¤ãŒå«ã¾ã‚Œã¦ã„ã¾ã™ã€‚<br>
+ãƒ»ãƒ­ã‚¸ã‚¹ãƒ†ã‚£ãƒƒã‚¯å›žå¸°ã‚’ä½¿ã£ã¦éŠ€è¡Œãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ãŒæˆåŠŸã™ã‚‹orå¤±æ•—ã™ã‚‹ã‚’åˆ¤æ–­ã—ã¾ã™ã€‚<br>
+ãƒ»k-meansæ³•ã‚’ä½¿ã£ã¦ã€2ã¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒšãƒ«ã‚½ãƒŠã«åˆ†ã‘ã‚‹ã€‚<br>
 
 ## Description
-EƒƒWƒXƒeƒBƒbƒN‰ñ‹A‚ðŽg‚Á‚ÄƒeƒŒƒ}[ƒPƒeƒBƒ“ƒO‚ª¬Œ÷‚·‚éorŽ¸”s‚·‚é‚ð”»’f‚·‚é
-@‚±‚ÌƒvƒƒOƒ‰ƒ€‚É‚Íà–¾•Ï”‚Æ‚µ‚ÄA‰º‹LƒŠƒ“ƒN‚É‚ ‚éƒf[ƒ^‚ð“ü—Í‚µ‚Ü‚·B
-@ https://archive.ics.uci.edu/ml/datasets/bank+marketing
-@‚±‚ÌƒvƒƒOƒ‰ƒ€‚ðŽÀs‚·‚é‚ÆA‚»‚Ìà–¾•Ï”‚©‚ç‰º‹LV‹K‚Ìà–¾•Ï”‚ðì‚è‚Ü‚·B
-@E”’lŒ^‚Ìà–¾•Ï”‚ð•W€‰»‚µ‚½‚à‚Ì
-@Eduration‚ª30•b–¢–ž‚©‚Ç‚¤‚©‚ð•\‚µ‚½‚à‚Ì
-@ECPI,CCI,AE—¦‚ðŽg‚Á‚Ä•s‹µ—¦‚ð•\‚µ‚½‚à‚Ì
-@‚»‚µ‚Ä‚»‚Ìà–¾•Ï”‚ðŽg‚Á‚Äy‚ð—\‘ª‚µA³‰ðƒf[ƒ^‚Æ”äŠr‚µ‚Ü‚·B
-Ek-measn–@‚ðŽg‚Á‚Ä2‚Â‚Ìƒf[ƒ^‚Ìƒyƒ‹ƒ\ƒi‚É•ª‚¯‚é
-@¡‰ñ‚Í2‚Â‚Ìƒf[ƒ^‚ðƒyƒ‹ƒ\ƒi‚É•ª‚¯‚½B
-@Eduration‚ª30•b–¢–žBduration‚ª30•b–¢–ž‚Ìê‡A
-@@“d˜b‚ð‚Æ‚Á‚Ä‚·‚®‚ÉØ‚Á‚½l‚¾‚Æ„‘ª‚³‚ê‚éBiŠwKƒf[ƒ^‚Å‚Í‚±‚ÌðŒ‚ð–ž‚½‚·l‚ÍƒeƒŒƒ}[ƒPƒeƒBƒ“ƒO‚ÉŽ¸”s‚µ‚Ä‚¢‚éj
-@@‚±‚ê‚ð‚·‚é‚±‚Æ‚Å‚æ‚èA“d˜b‚ð‚·‚®‚ÉØ‚Á‚½l‚Ìƒyƒ‹ƒ\ƒi‚ª‚í‚©‚é
-@Eduration‚ª30•bˆÈã‚ÅAƒeƒŒƒ}[ƒPƒeƒBƒ“ƒO‚ÉŽ¸”s‚µ‚½l
-@@duration‚ª30•bˆÈã‚È‚Ì‚ÅA“d˜b‚Å˜b‚ð‚µ‚½‚ªŽ¸”s‚µ‚½l‚Æ‚È‚éB
-@@‚±‚ê‚ð•ª—Þ‚·‚é‚±‚Æ‚ÅAŽ¸”s‚µ‚â‚·‚¢l‚ðƒJƒeƒSƒŠ[‰»‚Å‚«‘Îô‚ð—§‚Ä‚â‚·‚­‚È‚é‚ÆŽv‚í‚ê‚éB
+ãƒ»ãƒ­ã‚¸ã‚¹ãƒ†ã‚£ãƒƒã‚¯å›žå¸°ã‚’ä½¿ã£ã¦ãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ãŒæˆåŠŸã™ã‚‹orå¤±æ•—ã™ã‚‹ã‚’åˆ¤æ–­ã™ã‚‹<br>
+ã€€ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã«ã¯èª¬æ˜Žå¤‰æ•°ã¨ã—ã¦ã€ä¸‹è¨˜ãƒªãƒ³ã‚¯ã«ã‚ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å…¥åŠ›ã—ã¾ã™ã€‚<br>
+ã€€ https://archive.ics.uci.edu/ml/datasets/bank+marketing<br>
+ã€€ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’å®Ÿè¡Œã™ã‚‹ã¨ã€ãã®èª¬æ˜Žå¤‰æ•°ã‹ã‚‰ä¸‹è¨˜æ–°è¦ã®èª¬æ˜Žå¤‰æ•°ã‚’ä½œã‚Šã¾ã™ã€‚<br>
+ã€€ãƒ»æ•°å€¤åž‹ã®èª¬æ˜Žå¤‰æ•°ã‚’æ¨™æº–åŒ–ã—ãŸã‚‚ã®<br>
+ã€€ãƒ»durationãŒ30ç§’æœªæº€ã‹ã©ã†ã‹ã‚’è¡¨ã—ãŸã‚‚ã®<br>
+ã€€ãƒ»CPI,CCI,å°±è·çŽ‡ã‚’ä½¿ã£ã¦ä¸æ³çŽ‡ã‚’è¡¨ã—ãŸã‚‚ã®<br>
+ã€€ãã—ã¦ãã®èª¬æ˜Žå¤‰æ•°ã‚’ä½¿ã£ã¦yã‚’äºˆæ¸¬ã—ã€æ­£è§£ãƒ‡ãƒ¼ã‚¿ã¨æ¯”è¼ƒã—ã¾ã™ã€‚<br>
+ãƒ»k-measnæ³•ã‚’ä½¿ã£ã¦2ã¤ã®ãƒ‡ãƒ¼ã‚¿ã®ãƒšãƒ«ã‚½ãƒŠã«åˆ†ã‘ã‚‹<br>
+ã€€ä»Šå›žã¯2ã¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒšãƒ«ã‚½ãƒŠã«åˆ†ã‘ãŸã€‚<br>
+ã€€ãƒ»durationãŒ30ç§’æœªæº€ã€‚durationãŒ30ç§’æœªæº€ã®å ´åˆã€<br>
+ã€€ã€€é›»è©±ã‚’ã¨ã£ã¦ã™ãã«åˆ‡ã£ãŸäººã ã¨æŽ¨æ¸¬ã•ã‚Œã‚‹ã€‚ï¼ˆå­¦ç¿’ãƒ‡ãƒ¼ã‚¿ã§ã¯ã“ã®æ¡ä»¶ã‚’æº€ãŸã™äººã¯ãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ã«å¤±æ•—ã—ã¦ã„ã‚‹ï¼‰<br>
+ã€€ã€€ã“ã‚Œã‚’ã™ã‚‹ã“ã¨ã§ã‚ˆã‚Šã€é›»è©±ã‚’ã™ãã«åˆ‡ã£ãŸäººã®ãƒšãƒ«ã‚½ãƒŠãŒã‚ã‹ã‚‹<br>
+ã€€ãƒ»durationãŒ30ç§’ä»¥ä¸Šã§ã€ãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ã«å¤±æ•—ã—ãŸäºº<br>
+ã€€ã€€durationãŒ30ç§’ä»¥ä¸Šãªã®ã§ã€é›»è©±ã§è©±ã‚’ã—ãŸãŒå¤±æ•—ã—ãŸäººã¨ãªã‚‹ã€‚<br>
+ã€€ã€€ã“ã‚Œã‚’åˆ†é¡žã™ã‚‹ã“ã¨ã§ã€å¤±æ•—ã—ã‚„ã™ã„äººã‚’ã‚«ãƒ†ã‚´ãƒªãƒ¼åŒ–ã§ãå¯¾ç­–ã‚’ç«‹ã¦ã‚„ã™ããªã‚‹ã¨æ€ã‚ã‚Œã‚‹ã€‚<br>
 
 ## Requirement
-EƒƒWƒXƒeƒBƒbƒN‰ñ‹A‚ðŽg‚Á‚ÄƒeƒŒƒ}[ƒPƒeƒBƒ“ƒO‚É¬Œ÷‚·‚éorŽ¸”s‚·‚é‚ð”»’f‚·‚é
-@EƒvƒƒOƒ‰ƒ~ƒ“ƒOŒ¾ŒêFR
-@EiR studioj
-Ek-means–@‚ðŽg‚Á‚Ä2‚Â‚Ìƒf[ƒ^‚Ìƒyƒ‹ƒ\ƒi‚É•ª‚¯‚é
-@Ejupyter notebook
+ãƒ»ãƒ­ã‚¸ã‚¹ãƒ†ã‚£ãƒƒã‚¯å›žå¸°ã‚’ä½¿ã£ã¦ãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ã«æˆåŠŸã™ã‚‹orå¤±æ•—ã™ã‚‹ã‚’åˆ¤æ–­ã™ã‚‹<br>
+ã€€ãƒ»ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°è¨€èªžï¼šR<br>
+ã€€ãƒ»ï¼ˆR studioï¼‰<br>
+ãƒ»k-meansæ³•ã‚’ä½¿ã£ã¦2ã¤ã®ãƒ‡ãƒ¼ã‚¿ã®ãƒšãƒ«ã‚½ãƒŠã«åˆ†ã‘ã‚‹<br>
+ã€€ãƒ»jupyter notebook<br>
 
 ## Usage
-EƒƒWƒXƒeƒBƒbƒN‰ñ‹A‚ðŽg‚Á‚ÄƒeƒŒƒ}[ƒPƒeƒBƒ“ƒO‚É¬Œ÷‚·‚éorŽ¸”s‚·‚é‚ð”»’f‚·‚é
-@ER studio‚ð‹N“®‚µAuR/bank_marketing_sjis.Rv‚ð‹N“®‚·‚é
-@@i•¶Žš‰»‚¯‚·‚éê‡A•¶ŽšƒR[ƒh‚ðsjis‚É•ÏŠ·‚·‚éj
-@ESetton‚ðuRv‚ÌƒfƒBƒŒƒNƒgƒŠ‚ÉÝ’è‚·‚é
-@Eubank_marketing_sjis.Rv‚Ì‘S•¶‚ðŽÀs‚·‚é
-Ek-means–@‚ðŽg‚Á‚Ä2‚Â‚Ìƒf[ƒ^‚Ìƒyƒ‹ƒ\ƒi‚É•ª‚¯‚é
-@Ejupyter notebook‚ð‹N“®‚µAupython/Untitled.pynbv‚ðŠJ‚­
-@E‘S•¶ŽÀs‚·‚é
+ãƒ»ãƒ­ã‚¸ã‚¹ãƒ†ã‚£ãƒƒã‚¯å›žå¸°ã‚’ä½¿ã£ã¦ãƒ†ãƒ¬ãƒžãƒ¼ã‚±ãƒ†ã‚£ãƒ³ã‚°ã«æˆåŠŸã™ã‚‹orå¤±æ•—ã™ã‚‹ã‚’åˆ¤æ–­ã™ã‚‹<br>
+ã€€ãƒ»R studioã‚’èµ·å‹•ã—ã€ã€ŒR/bank_marketing_sjis.Rã€ã‚’èµ·å‹•ã™ã‚‹<br>
+ã€€ã€€ï¼ˆæ–‡å­—åŒ–ã‘ã™ã‚‹å ´åˆã€æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’sjisã«å¤‰æ›ã™ã‚‹ï¼‰<br>
+ã€€ãƒ»Settonã‚’ã€ŒRã€ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«è¨­å®šã™ã‚‹<br>
+ã€€ãƒ»ã€Œbank_marketing_sjis.Rã€ã®å…¨æ–‡ã‚’å®Ÿè¡Œã™ã‚‹<br>
+ãƒ»k-meansæ³•ã‚’ä½¿ã£ã¦2ã¤ã®ãƒ‡ãƒ¼ã‚¿ã®ãƒšãƒ«ã‚½ãƒŠã«åˆ†ã‘ã‚‹<br>
+ã€€ãƒ»jupyter notebookã‚’èµ·å‹•ã—ã€ã€Œpython/Untitled.pynbã€ã‚’é–‹ã<br>
+ã€€ãƒ»å…¨æ–‡å®Ÿè¡Œã™ã‚‹<br>
 
 ## Author
-Eiichi Takahashi
+Eiichi Takahashi<br>
