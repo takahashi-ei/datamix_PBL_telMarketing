@@ -114,6 +114,24 @@ calc_cutoff <-function(df,ypred_per){
   return(max_cutoff)
 }
 
+exec_score <-function(df,ypred_per,cut_off){
+  cutoff = i / 100
+  pred = ifelse(ypred_per > cutoff,1,0) 
+  conf_mat<-table(df$y_frag, pred)
+  value = conf_mat[4] * 2000 - (conf_mat[3]+conf_mat[4]) * 500
+#    value = conf_mat[4] / (conf_mat[2]+conf_mat[4])
+  print(paste("cutoff:",cutoff))
+  print(conf_mat)
+  print(paste("conf_mat[1]:",conf_mat[1]))
+  print(paste("conf_mat[2]:",conf_mat[2]))
+  print(paste("conf_mat[3]:",conf_mat[3]))
+  print(paste("conf_mat[4]:",conf_mat[4]))
+  print(value)
+  print(paste('cutoff:',max_cutoff,',value:',max_value))
+  plot(X,Y)
+  return(max_cutoff)
+}
+
 ###データ解析用に描画ソフトを起動する
 ### dfにはロジスティック回帰の結果を
 analyze_data<- function(df,glm){
@@ -121,6 +139,70 @@ analyze_data<- function(df,glm){
   df$y_pred<-predict(glm, newdata = df, type="response")
   df$y_line<-predict(glm, newdata = df, type="link")
   esquisse::esquisser(df)
+}
+
+read_test_data <- function(file_name,train_df){
+  df = read.csv(file_name)
+  print(df$job)
+  df$job = expect_variable(train_df$job,df$job)
+  print(summary(df$job))
+  df$job = as.factor(df$job)
+  
+  df$marital = expect_variable(train_df$marital,df$marital)
+  df$marital = as.factor(df$marital)
+  
+  df$education = expect_variable(train_df$education,df$education)
+  df$education = as.factor(df$education)
+  
+  df$default = expect_variable(train_df$default,df$default)
+  df$default = as.factor(df$default)
+  
+  df$housing = expect_variable(train_df$housing,df$housing)
+  df$housing = as.factor(df$housing)
+  
+  df$loan = expect_variable(train_df$loan,df$loan)
+  df$loan = as.factor(df$loan)
+    
+  #標準化
+  df$std_age = (train_df$age - mean(train_df$age)) / sd(train_df$age)
+  df$std_duration = (train_df$duration - mean(train_df$duration)) / sd(train_df$duration)
+  df$std_campaign = (train_df$campaign - mean(train_df$campaign)) / sd(train_df$campaign)
+  df$std_pdays = (train_df$pdays - mean(train_df$pdays)) / sd(train_df$pdays)
+  df$std_previous = (train_df$previous - mean(train_df$previous)) / sd(train_df$previous)
+  df$std_empVarRate = (train_df$emp.var.rate - mean(train_df$emp.var.rate)) / sd(train_df$emp.var.rate)
+  df$std_CPI = (train_df$cons.price.idx - mean(train_df$cons.price.idx)) / sd(train_df$cons.price.idx)
+  df$std_CCI = (train_df$cons.conf.idx - mean(train_df$cons.conf.idx)) / sd(train_df$cons.conf.idx)
+  df$std_euribior = (train_df$euribor3m - mean(train_df$euribor3m)) / sd(train_df$euribor3m)
+  df$std_employed = (train_df$nr.employed - mean(train_df$nr.employed)) / sd(train_df$nr.employed)
+  
+  #新規説明変数の追加
+  ##duration 30秒未満をリストデータに追加
+  df$duration_min_30 = ifelse(df$duration < 30,1,0)
+  df$duration_min_30 = as.factor(df$duration_min_30)
+  ##不況率を表すressessionを追加
+  ###初期値0とし、下の条件を満たすたびに＋１を行う(ただし2より大きい場合は、2とする)
+  ###std_empVarRateが0未満
+  ###std_CPIが0未満
+  ###std_CCIが0未満
+  df$ressession = ifelse(df$std_empVarRate < 0,1,0)
+  df$ressession = ifelse(df$std_CPI < 0,1+df$ressession,0+df$ressession)
+  df$ressession = ifelse(df$std_CCI < 0,1+df$ressession,0+df$ressession)
+  #ressessionは2のデータが少ないため、2のときのsuccessとなる確率が3となる確率より高くなるので、2以上は共通とする
+  df$ressession = ifelse(df$ressession >= 2,2,df$ressession)
+
+  ##仕事ごとにCCI,CPIの値の重みを変更    
+  df$std_CCI = (mean(subset(train_df,y == 'no')$std_CCI) - 
+                                        mean(subset(train_df,y == 'yes')$std_CCI)) * 
+                                        df$std_CCI
+  
+  df$std_CPI = (mean(subset(train_df,y == 'no')$std_CPI) - 
+                                        mean(subset(train_df,y == 'yes')$std_CPI)) * 
+                                        df$std_CPI
+  df$std_CPI = (df$std_CPI - mean(df$std_CPI)) / sd(df$std_CPI)
+  df$std_CCI = (df$std_CCI - mean(df$std_CCI)) / sd(df$std_CCI)
+  #yをyes=1,no=0に変更
+  df$y_frag = ifelse(df$y == 'yes',1,0)
+  return (df)
 }
 
 # 出力したCSVデータを読み込めます
@@ -133,10 +215,10 @@ sum(is.null(bank_marketing_train$job))
 ##unknownのjobは、他のjobのカテゴリーに変更する
 ##jobを推定できるような説明変数がないので、jobの"unknown"以外のカテゴリーの頻度を使う
 ##（jobの"unknown"以外のカテゴリーの出現頻度と同じになるようにする）
-#summary(bank_marketing_train$job)
+summary(bank_marketing_train$job)
 bank_marketing_train$job = expect_variable(bank_marketing_train$job,bank_marketing_train$job)
 bank_marketing_train$job = as.factor(bank_marketing_train$job)
-#summary(bank_marketing_train$job)
+summary(bank_marketing_train$job)
 
 
 #Ageのデータを見る。空のデータはなし。
@@ -305,6 +387,10 @@ print(calc_cutoff(bank_marketing_train,ypred_per))
 
 analyze_data(bank_marketing_train,try_glm)
 
+##テストデータの読み込み
+test_data =read_test_data("../data/bank_marketing_train.csv",bank_marketing_train) 
+ypred_per<-predict(try_glm, newdata = test_data, type="response")
+exec_score(test_data,ypred_per)
 #データの可視化
 #install.packages('esquisse')
 #bank_marketing_train$ressession = as.factor(bank_marketing_train$ressession)
