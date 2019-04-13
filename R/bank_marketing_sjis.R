@@ -86,7 +86,7 @@ calc_cutoff <-function(df,ypred_per){
   X = c()
   Y = c()
   #cutoffの値は、0~100まで5刻みで使う
-  for (i in 10:100){
+  for (i in 0:55){
 #    if (i %% 5 != 0){
 #      next
 #    }
@@ -115,21 +115,17 @@ calc_cutoff <-function(df,ypred_per){
 }
 
 exec_score <-function(df,ypred_per,cut_off){
-  cutoff = i / 100
-  pred = ifelse(ypred_per > cutoff,1,0) 
+  pred = ifelse(ypred_per > cut_off,1,0) 
   conf_mat<-table(df$y_frag, pred)
   value = conf_mat[4] * 2000 - (conf_mat[3]+conf_mat[4]) * 500
 #    value = conf_mat[4] / (conf_mat[2]+conf_mat[4])
-  print(paste("cutoff:",cutoff))
+  print(paste("cutoff:",cut_off))
   print(conf_mat)
   print(paste("conf_mat[1]:",conf_mat[1]))
   print(paste("conf_mat[2]:",conf_mat[2]))
   print(paste("conf_mat[3]:",conf_mat[3]))
   print(paste("conf_mat[4]:",conf_mat[4]))
   print(value)
-  print(paste('cutoff:',max_cutoff,',value:',max_value))
-  plot(X,Y)
-  return(max_cutoff)
 }
 
 ###データ解析用に描画ソフトを起動する
@@ -143,9 +139,7 @@ analyze_data<- function(df,glm){
 
 read_test_data <- function(file_name,train_df){
   df = read.csv(file_name)
-  print(df$job)
   df$job = expect_variable(train_df$job,df$job)
-  print(summary(df$job))
   df$job = as.factor(df$job)
   
   df$marital = expect_variable(train_df$marital,df$marital)
@@ -164,21 +158,21 @@ read_test_data <- function(file_name,train_df){
   df$loan = as.factor(df$loan)
     
   #標準化
-  df$std_age = (train_df$age - mean(train_df$age)) / sd(train_df$age)
-  df$std_duration = (train_df$duration - mean(train_df$duration)) / sd(train_df$duration)
-  df$std_campaign = (train_df$campaign - mean(train_df$campaign)) / sd(train_df$campaign)
-  df$std_pdays = (train_df$pdays - mean(train_df$pdays)) / sd(train_df$pdays)
-  df$std_previous = (train_df$previous - mean(train_df$previous)) / sd(train_df$previous)
-  df$std_empVarRate = (train_df$emp.var.rate - mean(train_df$emp.var.rate)) / sd(train_df$emp.var.rate)
-  df$std_CPI = (train_df$cons.price.idx - mean(train_df$cons.price.idx)) / sd(train_df$cons.price.idx)
-  df$std_CCI = (train_df$cons.conf.idx - mean(train_df$cons.conf.idx)) / sd(train_df$cons.conf.idx)
-  df$std_euribior = (train_df$euribor3m - mean(train_df$euribor3m)) / sd(train_df$euribor3m)
-  df$std_employed = (train_df$nr.employed - mean(train_df$nr.employed)) / sd(train_df$nr.employed)
+  df$std_age = (df$age - mean(train_df$age)) / sd(train_df$age)
+  df$std_duration = (df$duration - mean(train_df$duration)) / sd(train_df$duration)
+  df$std_campaign = (df$campaign - mean(train_df$campaign)) / sd(train_df$campaign)
+  df$std_pdays = (df$pdays - mean(train_df$pdays)) / sd(train_df$pdays)
+  df$std_previous = (df$previous - mean(train_df$previous)) / sd(train_df$previous)
+  df$std_empVarRate = (df$emp.var.rate - mean(train_df$emp.var.rate)) / sd(train_df$emp.var.rate)
+  df$std_CPI = (df$cons.price.idx - mean(train_df$cons.price.idx)) / sd(train_df$cons.price.idx)
+  df$std_CCI = (df$cons.conf.idx - mean(train_df$cons.conf.idx)) / sd(train_df$cons.conf.idx)
+  df$std_euribior = (df$euribor3m - mean(train_df$euribor3m)) / sd(train_df$euribor3m)
+  df$std_employed = (df$nr.employed - mean(train_df$nr.employed)) / sd(train_df$nr.employed)
   
   #新規説明変数の追加
   ##duration 30秒未満をリストデータに追加
-  df$duration_min_30 = ifelse(df$duration < 30,1,0)
-  df$duration_min_30 = as.factor(df$duration_min_30)
+#  df$duration_min_30 = ifelse(df$duration < 30,1,0)
+#  df$duration_min_30 = as.factor(df$duration_min_30)
   ##不況率を表すressessionを追加
   ###初期値0とし、下の条件を満たすたびに＋１を行う(ただし2より大きい場合は、2とする)
   ###std_empVarRateが0未満
@@ -191,16 +185,16 @@ read_test_data <- function(file_name,train_df){
   df$ressession = ifelse(df$ressession >= 2,2,df$ressession)
 
   ##仕事ごとにCCI,CPIの値の重みを変更    
-  df$std_CCI = (mean(subset(train_df,y == 'no')$std_CCI) - 
-                                        mean(subset(train_df,y == 'yes')$std_CCI)) * 
-                                        df$std_CCI
-  
-  df$std_CPI = (mean(subset(train_df,y == 'no')$std_CPI) - 
-                                        mean(subset(train_df,y == 'yes')$std_CPI)) * 
-                                        df$std_CPI
-  df$std_CPI = (df$std_CPI - mean(df$std_CPI)) / sd(df$std_CPI)
-  df$std_CCI = (df$std_CCI - mean(df$std_CCI)) / sd(df$std_CCI)
-  #yをyes=1,no=0に変更
+#  df$std_CCI = (mean(subset(train_df,y == 'no')$std_CCI) - 
+#                                        mean(subset(train_df,y == 'yes')$std_CCI)) * 
+#                                        df$std_CCI
+#  
+#  df$std_CPI = (mean(subset(train_df,y == 'no')$std_CPI) - 
+#                                        mean(subset(train_df,y == 'yes')$std_CPI)) * 
+#                                        df$std_CPI
+#  df$std_CPI = (df$std_CPI - mean(df$std_CPI)) / sd(df$std_CPI)
+#  df$std_CCI = (df$std_CCI - mean(df$std_CCI)) / sd(df$std_CCI)
+#  #yをyes=1,no=0に変更
   df$y_frag = ifelse(df$y == 'yes',1,0)
   return (df)
 }
@@ -322,8 +316,8 @@ bank_marketing_train$std_euribior = (bank_marketing_train$euribor3m - mean(bank_
 bank_marketing_train$std_employed = (bank_marketing_train$nr.employed - mean(bank_marketing_train$nr.employed)) / sd(bank_marketing_train$nr.employed)
 
 # duration 30秒未満をリストデータに追加
-bank_marketing_train$duration_min_30 = ifelse(bank_marketing_train$duration < 30,1,0)
-bank_marketing_train$duration_min_30 = as.factor(bank_marketing_train$duration_min_30)
+#bank_marketing_train$duration_min_30 = ifelse(bank_marketing_train$duration < 30,1,0)
+#bank_marketing_train$duration_min_30 = as.factor(bank_marketing_train$duration_min_30)
 bank_marketing_train$ressession = ifelse(bank_marketing_train$std_empVarRate < 0,1,0)
 bank_marketing_train$ressession = ifelse(bank_marketing_train$std_CPI < 0,1+bank_marketing_train$ressession,0+bank_marketing_train$ressession)
 bank_marketing_train$ressession = ifelse(bank_marketing_train$std_CCI < 0,1+bank_marketing_train$ressession,0+bank_marketing_train$ressession)
@@ -373,7 +367,7 @@ bank_marketing_train$std_CCI = (bank_marketing_train$std_CCI - mean(bank_marketi
 bank_marketing_train$y_frag = ifelse(bank_marketing_train$y == 'yes',1,0)
 #bank_marketing_train$ressession = (bank_marketing_train$ressession - mean(bank_marketing_train$ressession)) / sd(bank_marketing_train$ressession)
 
-try_glm = glm(y_frag~.-age-duration-campaign-pdays-previous-emp.var.rate-cons.price.idx-cons.conf.idx-euribor3m-nr.employed-y-y_frag-month-std_employed-day_of_week,data=bank_marketing_train)
+try_glm = glm(y_frag~.-age-duration-campaign-pdays-previous-emp.var.rate-cons.price.idx-cons.conf.idx-euribor3m-nr.employed-y-y_frag-month-std_employed-day_of_week-std_duration,data=bank_marketing_train)
 step(try_glm)
 summary(try_glm)
 print(exp(try_glm$coefficients))
@@ -382,18 +376,14 @@ pR2(try_glm)
 
 ypred_per<-predict(try_glm, newdata = bank_marketing_train, type="response")
 print(calc_cutoff(bank_marketing_train,ypred_per))
-#0.2~0.25部分でsuccessが多い・
-#その部分の特徴は
 
 analyze_data(bank_marketing_train,try_glm)
 
 ##テストデータの読み込み
-test_data =read_test_data("../data/bank_marketing_train.csv",bank_marketing_train) 
+df2 = read.csv("../data/bank_marketing_train.csv")
+test_data =read_test_data("../data/bank_marketing_test-1.csv",df2)
+##今回monthにSepが追加されている。
+##その場合学習にSepが入っていないので、今回はaprに強制的にする
+test_data$month = as.factor("apr")
 ypred_per<-predict(try_glm, newdata = test_data, type="response")
-exec_score(test_data,ypred_per)
-#データの可視化
-#install.packages('esquisse')
-#bank_marketing_train$ressession = as.factor(bank_marketing_train$ressession)
-#bank_marketing_train$y_pred<-predict(try_glm, newdata = bank_marketing_train, type="response")
-#bank_marketing_train$y_line<-predict(try_glm, newdata = bank_marketing_train, type="link")
-#esquisse::esquisser(bank_marketing_train)
+exec_score(test_data,ypred_per,0.17)
